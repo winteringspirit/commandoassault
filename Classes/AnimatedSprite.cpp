@@ -2,12 +2,6 @@
 
 AnimatedSprite::AnimatedSprite()
 {
-	float _AnimationDelay = 0.08f;
-	int _LoopTime = -1;
-	int _Rows = 1;
-	int _Columns = 1;
-	float _Width = 1;
-	float _Height = 1;
 }
 
 AnimatedSprite::~AnimatedSprite()

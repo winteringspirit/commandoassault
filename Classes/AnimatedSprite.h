@@ -9,8 +9,6 @@ USING_NS_CC;
 class AnimatedSprite :public Sprite
 {
 private:
-
-	
 	void releaseThis();
 public:
 	//Contructor & Destructor
