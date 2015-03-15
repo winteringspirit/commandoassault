@@ -17,6 +17,7 @@ AnimatedSprite* AnimatedSprite::create(std::string filepath, int columns, int ro
 {
 	AnimatedSprite* animatedsprite = new AnimatedSprite();
 	animatedsprite->init(filepath, columns, rows);
+	animatedsprite->autorelease();
 	return animatedsprite;
 }
 
@@ -26,6 +27,7 @@ AnimatedSprite* AnimatedSprite::createWithPhysicsBody(std::string filepath)
 	animatedsprite->initPhysicBody();
 	return animatedsprite;
 }
+
 AnimatedSprite* AnimatedSprite::createWithPhysicsBody(std::string filepath, int columns, int rows)
 {
 	AnimatedSprite* animatedsprite = AnimatedSprite::create(filepath, columns, rows);
@@ -39,6 +41,7 @@ bool AnimatedSprite::initWithTexture(Texture2D* texture)
 	}
 	return true;
 }
+
 bool AnimatedSprite::init()
 {
 	return Node::init();
@@ -69,8 +72,6 @@ bool AnimatedSprite::init(std::string filepath, int columns, int rows)
 		this->Frames.pushBack(SpriteFrame::createWithTexture(tx,
 			Rect((i % columns) * this->getWidth(), (i / columns) *this->getHeight(), this->getWidth(), this->getHeight())));
 	}
-	//auto release if dont use this(no need to call release - it's auto)
-	this->autorelease();
 	return true; 
 }
 
@@ -93,11 +94,6 @@ int AnimatedSprite::getSettingIntValue(std::string attribute)
 	return settings->valueForKey(attribute)->intValue();
 }
 
-void AnimatedSprite::setLoop(unsigned int looptime)
-{
-	_loopTime = looptime;
-}
-
 void AnimatedSprite::animate(float animationdelay, std::vector<int> frames)
 {
 	animate(animationdelay, frames, -1);
@@ -106,7 +102,9 @@ void AnimatedSprite::animate(float animationdelay, std::vector<int> frames)
 void AnimatedSprite::animate(float animationdelay, std::vector<int> frames, int loop)
 {
 	//start animation for this sprite
-	this->runAction(AnimatedSprite::createAnimate(animationdelay, frames, loop));
+	auto animate = AnimatedSprite::createAnimate(animationdelay, frames, loop);
+	animate->setTag(TAG_ANIMATED_SPRITE);
+	this->runAction(animate);
 }
 
 void AnimatedSprite::animateWithAutoRelease(float animationdelay, int loop)
@@ -116,38 +114,37 @@ void AnimatedSprite::animateWithAutoRelease(float animationdelay, int loop)
 		frames.push_back(i);
 
 	this->runAction(CCSequence::create(AnimatedSprite::createAnimate(animationdelay, frames, loop)
-		, CCCallFunc::create(this, callfunc_selector(AnimatedSprite::releaseThis)), NULL));
+		, RemoveSelf::create(), NULL));
 }
 
 void AnimatedSprite::setFrame(int frame)
 {
+	this->stopActionByTag(TAG_ANIMATED_SPRITE);
 	this->setSpriteFrame(Frames.at(frame));
 }
 
 void AnimatedSprite::animateWithAutoRelease(float animationdelay, std::vector<int> frames, int loop)
 {
 	this->runAction(CCSequence::create(AnimatedSprite::createAnimate(animationdelay, frames, loop)
-		, CCCallFunc::create(this, callfunc_selector(AnimatedSprite::releaseThis)), NULL));
+		, RemoveSelf::create(), NULL));
 }
 
-Animate* AnimatedSprite::createAnimate(float animationdelay, std::vector<int> frames, int loop)
+Animate* AnimatedSprite::createAnimate(float animationDelay, std::vector<int> frames, int loop)
 {
-	//set animation delay
-	_AnimationDelay = animationdelay;
-	Vector<SpriteFrame*> _animateframes;
+	Vector<SpriteFrame*> animatedFrames;
 
 	//add frame to vector sprite frame
 	for (int i = 0; i < frames.size(); i++)
 	{
-		_animateframes.pushBack(Frames.at(frames.at(i)));
+		animatedFrames.pushBack(Frames.at(frames.at(i)));
 	}
 	//create animation with a vector sprite frames
-	Animation* _animationW = Animation::createWithSpriteFrames(_animateframes, _AnimationDelay);
+	Animation* animation = Animation::createWithSpriteFrames(animatedFrames, animationDelay);
 	//set loop time
-	_animationW->setLoops(loop);
+	animation->setLoops(loop);
 	//stop all action that this sprite is active
 	this->stopAllActions();
-	return Animate::create(_animationW);
+	return Animate::create(animation);
 }
 
 void AnimatedSprite::initPhysicBody()
@@ -156,9 +153,4 @@ void AnimatedSprite::initPhysicBody()
 		PhysicsMaterial(0.0f, 0.0f, 0.0f));
 	physicsBody->setDynamic(true);
 	this->setPhysicsBody(physicsBody);
-}
-
-void AnimatedSprite::releaseThis()
-{
-	this->getParent()->removeChild(this, true);
 }

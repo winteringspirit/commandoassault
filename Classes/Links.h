@@ -15,17 +15,10 @@
 #define LINK_MAINMENU_BUTTON_CONTINUE_DOWN	"continuebuttondown.png"
 #define LINK_OLDFILM_EFFECT					"oldfilmeffect.png"
 
-#define LINK_COMMON_BUTTON_BACK_DOWN		"backbuttondown.png"
-#define LINK_COMMON_BUTTON_BACK_UP			"backbuttonup.png"
-#define LINK_COMMON_BUTTON_UNLOCKED_LEVEL_UP	"levelbuttonup.png"
-#define LINK_COMMON_BUTTON_UNLOCKED_LEVEL_DOWN	"levelbuttondown.png"
-#define LINK_COMMON_BUTTON_RESTART_UP		"restartup.png"
-#define LINK_COMMON_BUTTON_RESTART_DOWN		"restartdown.png"
-#define LINK_COMMON_BUTTON_PAUSE_UP			"pauseup.png"
-#define LINK_COMMON_BUTTON_PAUSE_DOWN		"pausedown.png"
-#define LINK_WORLD_MAP_BACKGROUND			"worldmap.png"
-#define LINK_CHAPTER_BUTTON_1				"chapter1bt.png"
-#define LINK_EXP_BAR						"expbar.png"
+#define LINK_GUN_0							"gun0.png"
+#define LINK_REXX_FOOT						"rexxfoot.png"
+#define LINK_REXX_BODY						"rexxbody.png"
+#define LINK_REXX_WEAPON_					""
 
 
 #endif

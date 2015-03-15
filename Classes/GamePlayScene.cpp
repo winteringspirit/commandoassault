@@ -12,11 +12,9 @@ Scene* GamePlayScene::create()
 #else
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
 #endif
-	scene->getPhysicsWorld()->setGravity(Vect(0, 0));
-
+	scene->getPhysicsWorld()->setGravity(Vect(0, -950));
 	auto _gamePlayLayer = GamePlayLayer::create();
-	_gamePlayLayer->setTag(TAG_GAMEPLAY_LAYER);
-	_gamePlayLayer->setPhyWorld(scene->getPhysicsWorld());
+	_gamePlayLayer->setWorld(scene->getPhysicsWorld());
 	scene->addChild(_gamePlayLayer);
 	return scene;
 }

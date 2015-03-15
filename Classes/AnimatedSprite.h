@@ -4,14 +4,15 @@
 #include "cocos2d.h"
 #include "Globals.h"
 
+#define TAG_ANIMATED_SPRITE	-1000
+
 USING_NS_CC;
 
 class AnimatedSprite :public Sprite
 {
 private:
-	void releaseThis();
 public:
-	//Contructor & Destructor
+	//Constructor & Destructor
 	AnimatedSprite();
 	~AnimatedSprite();
 	
@@ -20,10 +21,6 @@ public:
 
 	Vector<SpriteFrame*> Frames;
 	CCDictionary* settings;
-
-
-	void setAnimationDelay(float animationdelay){ _AnimationDelay = animationdelay; };
-	float getAnimationDelay(){ return _AnimationDelay; };
 
 	void initPhysicBody();
 	void setDynamicBody();
@@ -48,8 +45,6 @@ public:
 	void animateWithAutoRelease(float animationdelay, int loop);
 
 	Animate* createAnimate(float animationdelay, std::vector<int> frames, int loop);
-	//Set and get properties
-	void setLoop(unsigned int looptime);
 
 	//Sprite properties
 	CC_SYNTHESIZE(int, _rows, Rows);
@@ -59,9 +54,6 @@ public:
 
 	//Times loop
 	CC_SYNTHESIZE(int, _loopTime, LoopTime);
-	//animation delay
-	float _AnimationDelay;
-
 };
 
 #endif
