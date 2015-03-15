@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include "Globals.h"
 #include "MainmenuScene.h"
+#include "GamePlayScene.h"
 
 USING_NS_CC;
 AppDelegate::AppDelegate() {
@@ -35,8 +36,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	director->setDisplayStats(true);
 
     // create a scene. it's an autorelease object
-	//auto scene = GamePlayScene::create(0);
-	auto scene = MainMenuScene::createScene();
+	auto scene = GamePlayScene::create();
+	//auto scene = MainMenuScene::createScene();
 	TransitionFade* transition = TransitionFade::create(0.5f, scene);
 	director->runWithScene(transition);
     return true;
